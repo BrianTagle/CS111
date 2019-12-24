@@ -1,0 +1,17 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+contents:
+README: describes contents of the makefile and various notes on the project
+Makefile: makefile with make, clean, and dist targets
+lab4c_tcp.c: source code for the temperature reporting program that makes
+	     an unsecure connection to the server.
+lab4c_tls.c: source for the the temperaure reporting program that makes a
+	     secure connection to the server using ssl
+
+Notes:
+	Thanks to my TA, Diyu Zhou, and his slides that helped me write the
+	code that creates a secure ssl connection to the server.
+
+	

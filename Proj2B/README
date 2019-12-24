@@ -1,0 +1,84 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+contents:
+SortedList.h - The provided header file for the doubley linked list which provides a description of the interface for four functions: insert
+	     delete, lookup, and length
+	     
+SortedList.c - Source code for the implementation of the functions from the provided header file
+
+lab2_list.c -The same program from part a of project 2 with some new features.  Tracks the amount of time waited for mutex locks and reports it
+	    after a succesful run. Added the --lists feature which creates an array of lists which are "sublists"  each with individual locks.
+	    Using --lists we can hash element keys to be input into the array of lists to determine which sublist to put it in.
+	    
+Makefile - Makefile with targets default, tests, profile, graphs, dist, and clean. default builds the program, tests runs tests on the program
+	 needed for the graphs target. profile runs the profiling tool on the spinlocks.  dist creates the distribution tarball. clean removes files
+	 creates by the Makefile.
+	 
+profile.out - Output from the profiling tool that shows where time is spent in the single list spin-lock case
+
+(descriptions taken from project description)
+lab2b_1.png ... throughput vs. number of threads for mutex and spin-lock synchronized list operations.
+lab2b_2.png ... mean time per mutex wait and mean time per operation for mutex-synchronized list operations.
+lab2b_3.png ... successful iterations vs. threads for each synchronization method.
+lab2b_4.png ... throughput vs. number of threads for mutex synchronized partitioned lists.
+lab2b_5.png ... throughput vs. number of threads for spin-lock-synchronized partitioned lists.
+
+lab2b_list.csv - data output from the tests script, the lines in this file are the output at the end of every succesful run of the list program.
+
+README -readme containing description of cotents and answer to questions from project 2a description.
+
+tests.sh - testing script that runs various tests and outputs the result into lab2b_list.csv to be used as data points for graphing.
+
+graphingScript.gp - The graphing script I made to make the lab2b png files.
+
+
+Question 2.3.1 - For 1 and 2-thread list tests, most of the CPU time is spent doing the list operations like insert,length,lookup, and delete.
+	       This is because with fewer threads there is less contention for locks so the program spends less time waiting for locks to open.
+
+	       I believe this is the most expensive part of the code because checking and acquiring locks is very cheap when lock contention is
+	       low.  In this case, list operations are much more expensive relative to the cheap lock checking with 1 and 2 threads.
+	       
+	       For high thread spin-lock tests, I believe most of the time would be spent waiting for a lock to open.  This is because as the
+	       number of threads increase, lock contention also increases which causes spin-locks to spend more time waiting.
+
+	       For high thread mutex tests, ideally most of the CPU time should be spent doing list operations.  Despite the increased lock
+	       contention, mutex locks should go to sleep quickly after encountering a lock they cannot acquire.  This cuts down the time
+	       spent waiting and increases the amount of time spent doing list operations. This ideal case was not always seen in my graphs
+	       because the load of other students also testing their programs reduced my performance.
+
+Question 2.3.2 - The code for checking the spin-lock consumes the most amount of the CPU time when the program is run with a large number of threads
+
+	       The operation for checking the spin-lock becomes very expensive with large numbers of threads because of the increased lock
+	       contention and the fact the spin-locks do not yield and will run out their time slice waiting for locks.  So only one thread
+	       can acquire the spin-lock while many others will be waiting to acquire the lock and be waiting idle on the core until their
+	       time slice runs out.
+
+Question 2.3.3 - The average lock-wait time rises dramatically because there is an increased likelihood of multiple threads being in
+	       contention for a single lock.  As you add more threads the chance of multiple threads clashing increases very fast.
+
+	       Completion time per operation rises slowly with more threads because of the increased lock contention.  Contention among locks
+	       causes some threads to yield and incur costs for context switches.  when that thread is put back onto a core there is another context
+	       switch.  These context switches increase the completion time per operation.
+
+	       There may be more threads waiting for a lock to open, but there is still only one thread running the code in the critical section
+	       no matter how many threads there are.  Because of this, the program mantains a good completion time per operation despite the
+	       increased overhead of context switches while the waiting time for locks continues to increases because more threads are waiting.
+
+Question 2.3.4 - As the number of lists increase, each list will contain fewer elements and the contention for a lock for one of these lists
+	       will continue to decrease.
+
+	       With more lists the throughput should continue to increase until we hit a wall where lock contention is extremely small so it
+	       almost never happens.  Adding more lists after this point will have no effect and will be a waste of system resources because
+	       we will have to create a new lock object for every list.
+
+	       Based on the data the relationship between an N-way partioned list and a single list with 1/N fewer threads do show a loose relationship.
+	       I am hesitant to confirm the equivalence of this relationship because my test data showed a lot of variation because there were many
+	       other students testing their own programs on the linux server.  So based on the data I cannot confirm or deny the relationship.
+	       Ideally the relationship would be true but I believe in reality the shorter length of lists in the N-way partioned list and lower
+	       lock contention increases throughput more than only lower lock contention in the single list with 1/N fewer threads.
+
+Notes:	My research consisted of reviewing the slides of my TA Diyu Zhou.  The instruction for the profile tool and example code helped me
+	implement my project.  I also used two online sources that I used as a resource for code.  One is the hash function and the other is
+	the random key generator.  Both of these are cited in my lab2_list.c code for this project.

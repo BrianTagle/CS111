@@ -1,0 +1,37 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+Lab0
+
+IMPORTANT NOTE: DO NOT INCLUDE ANY FILE NAMED input.txt OR output.txt IN THE DIRECTORY IN WHICH YOU RUN "make check".
+	  THE TESTS IN THE MAKEFILE WILL STILL WORK BUT WILL DELETE THOSE FILES AFTER COMPLETING THE TESTS.
+
+P0.c: The project source code.  The program takes input and output files and then manipulates file descriptors so that stdin points to the
+      input file and stdout points to the output file.  Then the program reads from stdin(input file) and writes to stdout(output file).
+      The program also has an option that causes a segfault and an accompanying catch option that catchs the SIGSEGV signal from the segfault.
+Makefile: The makefile that can compile, clean, check, and create the distribution tarball.  The check command runs the smoke-tests described below.
+backtrace.png: Screenshot of the backtrace after encountering a segmentation fault in gdb
+breakpoint.png: Screenshot inspecting the pointer that caused the segmentation fault before bad assignment in gdb.
+README.txt: readme with that summarizes of all files in the distribution tarball.  Also provides a relevant note about running make check with
+	    certain files in your directory. Includes notes about limitations, research, and sources.
+
+smoke-tests: I focused on checking exit behavior, specifically that correct exit codes were being sent under different conditions
+inputoutputTest: Main functionaly check that ensures the correct exit code of 0 is given upon succesful read and write from input to output.
+		 Also checks to see that the input read and output written are identical.
+unrecognizedargumentTest: Checks that the program exits and gives exit code 1 if an unrecognized argument is encountered.
+inputfileErrorTest: Checks that the program exits and gives exit code 2 if it cannot open the specified input file.
+outputfileErrorTest: Checks that the progam gives exit code 3 if it cannot open and write to the specified output file.
+signalTest: Ensures that the --catch option successfully catches segfaults and gives exit code 4.
+
+Limitations: I included error checking in the source code for if dup() fails but I am unsure how to trigger an error in dup().  Becuase of this
+	     I could check that my error reporting for dup() works.  Cases in which dup() fails may be out of this project's scope.
+
+Research: To do this project I heavily studied the getopt(3) and dup(2) linux manual pages to get an understanding of how to implement options
+	  and how file descriptor works. I also studied the slides of my TA, Diyu Zhou to gain a better understanding of how to implement some
+	  features such as how to manipulate file descriptors.
+
+Sources:
+https://linux.die.net/man/3/getopt
+http://man7.org/linux/man-pages/man2/dup.2.html
+

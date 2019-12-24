@@ -1,0 +1,21 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+contents:
+	lab1a.c : c source code that has one option --shell=program that takes program as a required argument. The program run without options "put(s) the keyboard (the file open on file descriptor 0) 
+	into character-at-a-time, no-echo mode" as stated by the project spec. the program reads from the keyboard and writes back to the display until it receives the shutdown signal 0x04. Running with
+	the --shell option forks the process to have both a shell and a terminal process with pipes between the two.  This allows us to send commands to the shell and write back the output to the terminal.
+
+	Makefile: make create the lab1a executable from the c source code with make.
+		  make clean removes the executable and distribution tarball.
+		  make dist creates rthe distribution tarball.
+
+	README: A list of the contents of distrubiton tarball as well as information on research and testing methodology.
+
+research:
+	My research consisted of looking up the different system calls needed for creating a seperate shell and terminal process and polling the pipes to check for readable data. I also used my the slides of
+	my TA DIYU ZHOU to better understand some of the system calls needed and also how to implement them.
+testing methodology:
+	I checked to see if characters were echoed one at a time to the terminal and also if the shell was capable of running commands.  I used the sanity check script a lot when trying to see if my program
+	was correctly stopping orphaned processes.

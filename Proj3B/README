@@ -1,0 +1,18 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+contents:
+
+Makefile - makefile for this project with default, dist, and clean targets
+README - lists contents of the dist file and some notes on the project
+lab3b.py - source code for this lab that examines a csv file and looks for any
+	 inconsistencies.  The  data that was formatted the same as what we generated in lab3a.  
+Notes:
+	I would like to thank my TA, Diyu Zhou, and his slides for helping me
+	figure out what some basic algorithims to sort through the data
+
+	I used python because it was  recommended in the lab spec.  Also when I
+	originally tied to use C++, the linux server didnt have the library I
+	needed to make it work.  
+

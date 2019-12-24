@@ -1,0 +1,84 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+Contents:
+lab2_add.c - Source code for part1 of lab2 that implements the threaded add program. The program add 1 and then subtracts 1 from a counter.
+	   This means that if the correct output is that the counter is 0 after all threads have run.  Without synchronization, the program
+	   frequently has incorrect output with a nonzero counter.  The problem is made clear with the yield option which causes the thread
+	   to yield during a critical section and since there are no locks other threads can access the critical section while other threads
+	   have yielded.  The sync options provides three different ways to implement mutual exclusion which fixes the non-deterministic output.
+SortedList.h - The provided header file for the doubley linked list which provides a description of the interface for four functions: insert
+	     delete, lookup, and length
+SortedList.c - Source code for the implementation of the functions from the provided header file
+lab2_list.c -Source for for part2 of lab 2 that implements the threaded doublely linked list.  For each iteration, a thread inputs a random
+	    key into the list.  The thread then checks the length of the list and then removes all random keys it added earlier.  The program
+	    usually fails catastrophically without sync protection.
+Makefile - Makefile with targets default, tests, graphs, dist, and clean.
+lab2_add.csv - data output from the addtests script, everytime the program is run it outputs a csv line.
+lab2_list.csv - data output from the listtests script, the line in this file is the one output at the end of every run of the list program.
+lab2_add.gp - grapher script that takes data from addcsv file and generates the 5 add graphs needed for this assignment
+lab2_list.gp - grapher script that takes data from list csv file and generates the 4 list graphs needed for this assignment
+
+lab2_add-1.png ... graph ofthreads and iterations required to generate a failure (with and without yields)
+lab2_add-2.png ... graph of average time per operation with and without yields.
+lab2_add-3.png ... graph of average time per (single threaded) operation vs. the number of iterations.
+lab2_add-4.png ... graph of threads and iterations that can run successfully with yields under each of the synchronization options.
+lab2_add-5.png ... graph ofaverage time per (protected) operation vs. the number of threads.
+lab2_list-1.png ... graph of average time per (single threaded) unprotected operation vs. number of iterations (illustrating the correction of the per-operation cost for the list length).
+lab2_list-2.png ... graph of threads and iterations required to generate a failure (with and without yields).
+lab2_list-3.png ... graph of iterations that can run (protected) without failure.
+lab2_list-4.png ... graph of (length-adjusted) cost per operation vs the number of threads for the various synchronization options.
+(description of png files are taken directly from lab description)
+
+addtests.sh -script that runs tests for the add program
+listtests.sh -script that runs tests for the list program
+README -readme containing description of cotents and answer to questions from project 2a description.
+
+QUESTIONS:
+2.1.1 - It takes many iterations before errors are seen because the chances of an error occuring are very slim for the add program.  This is
+      also the reason why a small number of iterations seldom fail. In order for an error to occur there must be very specific circumstances
+      where two or more threads are in the critical section at the same time or a thread is interrupted while it is in the critical section.
+      because the critical section of the code is only a few instructions the chances of these conditions being met are slim.  However when
+      we start adding more and more iterations, we have more chances to encounter an error which means the likelihood of an error occuring
+      increases.
+      
+2.1.2 - The --yield runs are slower because we call sched_yield() which means the thread voluntarily moves off its current core and has to
+      wait in the queue to be run again.  There is also an added cost of context switches where the OS has to save info from the thread so
+      it can run it again later and load in info from another process to run.
+
+      No, it is not possible to get valid per-operation timings with --yield.  This is because there is time devoted to sched_yield() and
+      context switching that is not accounted for in our per-operation timing calculation.
+      
+2.1.3 - Creating a new thread is very costly and running an iteration is extremely cheap, so running many iterations on a single thread lowers
+      the average cost per operation because you only have the overhead of creating a single thread and can run many cheap iterations.
+
+      In order to discover how many iterations to run and find the correct costs, we can look at the graphs for the add program.  The average
+      cost per iteration seems to be decreasing exponentially.  Eventually there will be a point where the slope of the graph drops noticeably
+      and adding more iterations does significantly affect the cost.  This sweet spot is where we should look for a good number of iterations.
+      
+2.1.4 - All synchronization options peform similarly for a low number of threads because when there are only a few number of threads there is
+      less competition for critical section of the code.  In this case, each thread has a good chance of entering the critical section without
+      being locked out and performing all instructions in the critical section before another thread tries to enter.
+
+      When the number of threads increases the performance of synchronization also decreases because there is more contention for the critical
+      section of the code. Since there are an increased number of threads it is more likely that when a thread approaches the critical section
+      it will be locked and will have to wait for the lock to open by spinning or going to sleep(or both), both of which increase overhead.
+
+2.2.1 -The cost of mutex operations in the linked list data structure increases much faster than the cost of mutex operations in the add program.
+      The shape of both graphs is linear and increasing while the list mutex cost is slightly steeper than the add mutex cost.  I would expect these
+      graphs to look more exponential in their cost if we had more data points to look at. The reason that the cost of the mutex for the linked list
+      is higher than the add mutex is because there are more operations going on in the linked list.  In the linked list we have to traverse and move
+      around pointers while with the add mutex we just have to add a value.
+      
+2.2.2 - Both graphs for mutex and spin locks show an increasing cost per operation as the number of threads increase.  This makes sense because
+      there are more threads that compete for the locks. Both mutex and spin locks start at the same cost per operation but as the number of threads
+      increases the spin locks becomes more expensive than the mutex.  This is because the spin lock is more likely to be locked with more threads, so
+      the spin lock will waste time waiting for the spin lock to open while the mutex may spin a few times but will go to sleep quickly and not waste
+      more CPU cycles.  This shows that spin locks have a lower scalability than mutex.  
+
+
+Notes:	My research consisted of reviewing the slides of my TA Diyu Zhou and reviewing various resources like the pthread libray and how mutex and
+	spin locks worked. The example code provided by my TA helped me understand how to implement the different features of this project correctly.
+	I also want to credit this resource: https://www.geeksforgeeks.org/program-generate-random-alphabets/ for helping me create random keys
+	for part 2 of this project.

@@ -1,0 +1,25 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+contents:
+lab1b-client: The implementation of the client part of the project.  connects to the server implementation and
+	      sends input from the user (through the keyboard) to the server. if --encrypt is enabled, encrypts
+	      data sent to the server and decrypts data from the server using the provided key.  if --log is
+	      enabled, writes the amount of bytes sent and recieved as well as what is written and
+	      read to the connection socket to the chosen log file.
+lab1b-server: The implementation of the server part of this project.  recieves input from a client and sends
+	      that input to a forked shell process which executes the commands from the client.  if
+	      --encrypt is enabled, the server decrypts incoming data from the shell and encrypts data it
+	      sends back to the client with the provided key.
+my.key: The key to be provided to the client and the server to do their encryption and decryption.  This key
+	was made by hitting random keys on my keyboard.
+Makefile: The makefile for this projects that has the default make option which compiles both the server and
+	  client.  Also options for compiling the server and client individual.  Has options to clean and
+	  make the distribution tarball.
+README: Contains a description of the tarball contents as well as notes about research for this project.
+
+Notes:	My research mainly consisted of reviewing the slides of my TA Diyu Zhou and looking up manual pages
+	for mcrypt and the various functions needed to create a connection between server and client
+	(socket() for example).  The example code provided by my TA helped me understand how to implement
+	the different features of this project correctly.

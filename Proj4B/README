@@ -1,0 +1,20 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+Contents:
+Makefile - makefile with default, check, clean, and dist targets
+lab4b.c - Source code for the temperature reporting program.  Reports the temperature at a regular interval(period) on a specified scale (C or F).
+	supports a --log option which will log the reported temperatures and commands from STDIN.  The commands from STDIN allow the user to change
+	the period and scale during runtime as well as pause the program and log things to the logfile.  You can shut off the program with a
+	command to STDIN or by pressing the button which generates an interrupt that shuts down the program.
+test.sh -testing script that runs a quick smoke check on the lab4b executable
+README -readme with details on contents of the tarball and various notes on the project
+
+This project was extremely generally and basically gave no instructions as to what the program should do for bad STDIN commands or options.  For
+the most part my program continues to run if given bad options and makes no changes based on bad arguments and reports something to stderr. Also
+since the program logs valid or invalid commands, the LOG instruction is useless except for the fact that if you use LOG the program will not
+report anything to stderr.
+
+I would like to thank my TA Diyu Zhou and his slides that helped me implement various features of this program which include the temperation conversion
+and reporting the real time.  

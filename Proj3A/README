@@ -1,0 +1,24 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+contents:
+
+Makefile - makefile for this project with default, dist, and clean targets
+README - lists contents of the dist file and some notes on the project
+lab3a.c - source code for this lab that examines an image from the EXT2 filesystem
+	and outputs various info on the blocks and bitmaps of the image provided.
+ext2_fs.h - header file containing important functions that allow the lab3a.c
+	  code to gather information on the provided EXT2 image.  I included
+	  this in the dist tarball because otherwise my dist does not pass
+	  the sanity check.
+
+Notes:
+	I would like to thank my TA, Diyu Zhou, and his slides for helping me
+	figure out what functions to use from the ext2_fs.h file and how to use them
+
+	In my code, I have several successive fprintf statements that could be
+	condensed into a single fprintf.  I mostly did this for my own clarity
+	when writing the code.  This approach may seem wasteful but as I learned
+	in CS35L, fprintf buffers writes, so my approach doesnt add a huge
+	amount of overhead.

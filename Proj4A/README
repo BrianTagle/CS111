@@ -1,0 +1,18 @@
+NAME: Brian Tagle
+EMAIL: taglebrian@gmail.com
+ID: 604907076
+
+Beaglebone serial number: BBGW18040272
+WiFi MAC address: 2CF7F106900F
+
+contents:
+my_beaglebone.jpg: A selfie of me and my Beaglebone showing the front of the board
+connected.png: Screenshot of the Beaglebone terminal after running ifconfig to show that I configured
+network access and gave my board a name.
+copy.png: Sceenshot of me transfering the helloWorld.c program from my desktop to the Beaglebone.
+build_run.png: Screenshot of building and running my trivial hello world program (helloWorld.c).
+git.png: Screenshot of installing git and cloning a simply hello world repository.  I also enter the
+	 new created directory to confirm it worked.
+Makefile: Makefile to create the distribution tarball.  Also has an clean option (removes the tarball).
+README: Contains the beaglebone S/N and MAC address as well as a description of the files in the
+	tarball.
